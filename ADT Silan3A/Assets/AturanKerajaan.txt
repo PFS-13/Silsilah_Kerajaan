@@ -1,0 +1,13 @@
+
+	============================= ATURAN KERAJAAN ============================
+
+	1. Raja/ ratu hanya bisa digantikan ketika raja/ ratu tersebut mati.
+	2. Pewaris tahta tidak ditentukan gender.
+	3. Bangsawan boleh menikah dengan orang biasa.
+	4. Urutan pewaris tahta:
+	   a. Anak pertama
+	   b. Cucu raja /ratu dari anak pertama 
+	   c. Saudara cucu anak pertama
+	   d. Saudara dari anak pertama sesuai urutan
+
+	==========================================================================

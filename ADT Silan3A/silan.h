@@ -10,21 +10,26 @@
 
 #include <malloc.h>
 #include <string.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include <conio.h>
 #include <windows.h>
 #include "boolean.h"
 
-#define firstSon(P) (P)->nodeFS
-#define nextBrother(P) (P)->nodeNB
-#define parent(P) (P)->nodePR
+#define data(P) (P)->data
+#define firstSon(P) (P)->firstSon
+#define nextBrother(P) (P)->nextBrother
+#define parent(P) (P)->parent
 #define gender(P)	(P)->gender
+#define status(P)	(P)->status
+#define usia(P)	(P)->usia
+#define wife(P) (P)->wife
 
 /*Definisi akses component type */
-
+#define data(P)	(P)->data
+#define next(p)	(p)->next 
 #define Nil NULL
 
 typedef char* infotype;
@@ -36,69 +41,78 @@ typedef struct TNode{
 	Node nodeFS;
 	Node nodePR;
 	Node nodeNB;
-} node;
+} Tnode;
 
 typedef struct{
-	Node  root;
+	Node root;
 } Root;
 
-void createEmptyTree(Node node);
+void createEmptyTree(Root *root);
 /* Membuat Tree baru yang masih kosong  */
 /* I.S : Tree belum terbuat */
 /* F.S : Tree sudah terbuat */
 
-bool isEmpty(Root root);
+bool isEmpty(Node *node);
 /* Mengecek apakah suatu tree kosong atau tidak */
 
 bool isRoot(Root root, Node node);
 /* Mengecek apakah suatu node tersebut adalah root atau bukan */
 
-Node  insertNode(infotype nama, bool jenisKelamin);
+void insertNode(infotype nama, bool jenisKelamin, Node parent);
 /* Membuat node dan memasukkan value kedalam node tersebut lalu mengembalikan node tersebut */
+
+Node searchNode(Root X, infotype nama);
+/* Mencari suatu Node berdasarkan subvar nama lalu akan mengembalikan node tersebut jika ketemu */
 
 void deleteNode(Root X, infotype nama);
 /* Menghapus Node dari suatu Tree */
 /* I.S : Node belum terhapus */
 /* F.S : Node sudah terhapus */
 
-Node  searchNode(Root X, infotype nama);
-/* Mencari suatu Node berdasarkan subvar nama lalu akan mengembalikan node tersebut jika ketemu */
-
-void preOrder(Root X);
+void garisSuksesi(Root X);
 /* Menampilkan urutan garis suksesi silsilah secara preOrder */
 /* I.S : Node sudah ada */
 /* F.S : Node sudah terurut secara preOrder */
 
-int level(Node node, infotype nama);
-/* Mencari level pada suatu node tertentu */
-
-void levelOrder(Root X);
-/* Menampilkan urutan node tree secara levelOrder  */
-/* I.S : Node belum terurut secara levelOrder */
-/* F.S : Node sudah terurut secara levelOrder */
-
-int depth(Root X);
-/* Menghitung depth tree */
-
 void displayFamily(Root X);
-/* Menampilkan silsilah kerajaan secara levelOrder */
+/* Menampilkan silsilah kerajaan saat ini (secara keseluruhan yang masih hidup) */
 /* I.S : Silsilah kerajaan belum tampil */
 /* F.S : Silsilah kerajaan sudah tampil */
 
 int countChild(Node node);
-/* Menghitung jumlah anak dari suatu node /
+/* Menghitung jumlah anak dari suatu node */
 
 bool isSingle(Node Person);
 /* Mengecek apakah value subvar mate dari node tersebut terisi atau null */
 
-void setMate(Node Person);
-/* Mengisi value subvar mate dari suatu node /
+void setMate(Node Person, infotype mate);
+/* Mengisi value subvar mate dari suatu node */
 /* I.S : Subvar mate pada node masih null */
 /* F.S : Subvar mate pada node sudah terisi value */
 
-//void setNewRoot();
-///* Membuat Tree baru yang masih kosong  */
-///* IS : Tree belum terbuat */
-///* FS : Tree sudah terbuat */
+void displayRules();
+/* Menampilkan aturan pada kerajaan Inggris */
+/* I.S : Aturan kerajaan Inggris belum tampil di layar */
+/* F.S : Aturan kerajaan Inggris sudah tampil di layar */
+
+void displayDetailNode();
+/* Menampilkan level, pasangan, dan jumlah anak */
+/* I.S : Detail suatu node belum tampil di layar */
+/* F.S : Detail suatu node sudah tampil di layar */
+
+void displayDetailKingdom(Root X);
+/* Menampilkan pilihan ingin melihat aturan atau silsilah kerajaan sebelumnya */
+/* I.S : Aturan atau silsilah kerajaan belum tampil di layar */
+/* F.S : Aturan atau silsilah kerajaan sudah tampil di layar */
+
+void displayMenuExit();
+/* Menampilkan tampilan menu keluar */
+/* I.S : Menu tampil di layar */
+/* F.S : Keluar dari program */
+
+void displayKingdom();
+/* Menampilkan desain kerajaan */
+/* I.S : Desain kerajaan belum tampil di layar */
+/* F.S : Desain kerajaan sudah tampil di layar */
 
 #endif
