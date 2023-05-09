@@ -37,6 +37,7 @@ int main() {
 				bool G;
 				if (king.root == NULL)
 				{
+					printf("=======================\nMEMBUAT PEMIMPIN\n=======================\n");
 					printf("Masukkan Nama Bangsawan : ");
 					scanf( "%s", name);
 					
@@ -68,21 +69,22 @@ int main() {
 					lead->mate = NULL;
 					king.root = lead;
 					printf("Selamat kepada %s telah menjadi %s baru\n", king.root->nama,status);
-					system("pause");
+					//system("pause");
 				}else {
 					Node pr;
 					infotype child;
 					child = (infotype) malloc(sizeof(infotype));
 					parent = (infotype) malloc(sizeof(infotype));
+					printf("=======================\nMENAMBAH ANAK\n=======================\n");
 					do
 					{
 					printf("Masukkan Nama Orang Tua Bangsawan : ");
 					scanf("%s", parent);
 						pr = searchNode(king,parent);
 						if(pr == NULL){
-							printf("Data orang tua tidak ada, silahkan masukkan nama lain\n");
+							printf("Data '%s' tidak ada, silahkan masukkan nama lain\n", parent);
 						} else if(isSingle(pr)){
-							printf("Orang ini belum menikah, belum bisa mempunyai anak\n");
+							printf("%s belum menikah, belum bisa mempunyai anak\n",pr->nama);
 						}
 					} while (pr == NULL || isSingle(pr));
 
@@ -103,7 +105,7 @@ int main() {
 							printf("data jenis kelamin tidak sesuai, silahkan masukkan yang sesuai\n");
 						}
 					} while (jk != 'L' && jk != 'P' && jk != 'l' && jk != 'P' );
-					infotype gender;  
+					infotype gender;
 					if(jk == 'L' || jk == 'l'){
 						G = TRUE;
 						gender = "Putra";
@@ -113,18 +115,16 @@ int main() {
 						gender = "Putri";
 					}
 					insertNode(child,G,pr);
-					printf("\nSelamat atas kelahiran nya %s, %s dari %s dan %s, may god bless this family forever\n",pr->nodeFS->nama,gender,pr->nama,pr->mate);
-					system("pause");
+					printf("\nSelamat atas kelahiran nya %s, %s dari %s dan %s, may god bless this family forever\n",child,gender,pr->nama,pr->mate);
+					//system("pause");
 				}
 				break;
 			case 2:
 			if (king.root == NULL)
 			{
 				printf("TENTUKAN DULU PEMIMPIN KERAJAAN");
+				//system("pause");
 			}else {
-
-			
-			
 			infotype bride;
 			bride = (infotype) malloc(sizeof(infotype));
 			Node mates;
@@ -138,9 +138,15 @@ int main() {
 						if(mates == NULL){
 							printf("Nama tidak ada, silahkan masukkan nama lain\n");
 						} else if(mates->mate != NULL){
-							printf("Bangsawan ini sudah memiliki pasangan, silahkan masukkan nama lain\n");
+							printf("Bangsawan ini sudah memiliki pasangan, tidak bisa menikah lagi \n");
+							//system("pause");
 						} 
 					} while (mates == NULL);
+					if (mates->mate != NULL)
+					{
+						break;
+					}
+					
 					if(mates->jenisKelamin == FALSE){
 						printf("Nama Suami Bangsawan : ");
 					} else{
@@ -149,7 +155,7 @@ int main() {
 				scanf("%s",soulmate);
 				setMate(mates,soulmate);
 				printf("Selamat pernikahan atas %s dengan %s, may be forever even after death\n",bride,soulmate);
-				system("pause");
+				//system("pause");
 				}
 				break;
 			case 3:
@@ -157,34 +163,55 @@ int main() {
 			{
 				printf("TENTUKAN DULU PEMIMPIN KERAJAAN");
 			}else {
+				printf("=======================\nMEMBUNUH BANGSAWAN\n=======================\n");
 				infotype Delete;
-			Delete = (infotype) malloc(sizeof(infotype));
+				Delete = (infotype) malloc(sizeof(infotype));
 				printf("Siapa bangsawan yang akan ada bunuh ? ");
 				scanf( "%s", Delete);
 				deleteNode(king,Delete);
 				}
 				break;
 			case 4:
-			if (king.root == NULL)
-			{
-				printf("TENTUKAN DULU PEMIMPIN KERAJAAN");
-			}else {
-				displayDetailNode();
-				}
+			printf("\n\t==================== MENCARI BANGSAWAN ====================\n\n");
+			    if (king.root == NULL) {
+			        system("cls");
+			        printf("\tTENTUKAN DULU PEMIMPIN KERAJAAN\n\n\t");
+			        //system("pause");
+			    } else {
+			        infotype namaNode;
+					namaNode = (infotype) malloc(sizeof(infotype));
+			        Node info;
+			        system("cls");
+			        //do {
+			            printf("\tNama Bangsawan : ");
+			            scanf("%s", namaNode);
+			            info = searchNode(king, namaNode);
+			            if (info == NULL) {
+			                printf("\n\t=============================== TIDAK DITEMUKAN ===============================\n\n");
+			                printf("\n\tNama Bangsawan Salah.\n\n\t");
+			                //system("pause");
+			            } else {
+			                displayDetailNode(king,info);
+			            }
+			        //} while (info == NULL || info->mate == NULL);
+			    }
+			    break;
 			break;
 			case 5:
 				displayDetailKingdom(king);
-				system("pause");
+				//system("pause");
 				break;
 			case 6:
 				displayMenuExit();
 				break;
 			default:
 				printf("\n\tPilihanmu salah, pilih lagi!\n\t");
-				system("pause");
+				//system("pause");
 				break;
 		}
 	}
 	return 0;
 }
+
+
 

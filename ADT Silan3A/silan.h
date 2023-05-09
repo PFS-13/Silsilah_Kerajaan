@@ -38,6 +38,7 @@ typedef struct TNode{
 	infotype nama;
 	bool jenisKelamin;
 	infotype mate;
+	infotype parent;
 	Node nodeFS;
 	Node nodePR;
 	Node nodeNB;
@@ -95,7 +96,7 @@ void displayRules();
 /* I.S : Aturan kerajaan Inggris belum tampil di layar */
 /* F.S : Aturan kerajaan Inggris sudah tampil di layar */
 
-void displayDetailNode();
+void displayDetailNode(Root X,Node node);
 /* Menampilkan level, pasangan, dan jumlah anak */
 /* I.S : Detail suatu node belum tampil di layar */
 /* F.S : Detail suatu node sudah tampil di layar */
