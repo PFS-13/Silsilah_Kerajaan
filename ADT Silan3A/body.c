@@ -41,9 +41,8 @@ void insertNode(infotype nama, bool jenisKelamin, Node parent)
     newNode->jenisKelamin = jenisKelamin;
     newNode->mate = NULL;
     newNode->nodeFS = NULL;
-    newNode->nodePR = NULL;
-    newNode->nodeNB = parent;
-    
+    newNode->nodeNB = NULL;
+    newNode->nodePR = parent;
     if (parent->nodeFS != NULL) {
     	Node temp;
     	temp = parent->nodeFS;
@@ -59,97 +58,70 @@ void insertNode(infotype nama, bool jenisKelamin, Node parent)
 Node searchNode(Root X,infotype nama)
 /* Mencari suatu Node berdasarkan subvar nama lalu akan mengembalikan node tersebut jika ketemu */
 {
-	Node Pcur;	
+	Node Pcur = X.root;
 	bool Resmi = true;
-	Pcur = X.root;
-	if (strcmp(Pcur->nama,nama) == 0){
-		return Pcur;
+	if (strcmp(Pcur->nama,nama) == 0)
+	{
+				return Pcur;
 	}
-	while(Pcur != NULL){
-		if (Pcur->nodeFS != NULL && Resmi){
-			if (strcmp(Pcur->nama, nama) == 0) {
-				return Pcur;
-			}
+	while (Pcur != 0 )
+	{
+		if (Pcur->nodeFS != NULL && Resmi)
+		{
 			Pcur = Pcur->nodeFS;
-		} else if (Pcur->nodeNB != NULL) {
-			Pcur = Pcur->nodeNB;
-			if (strcmp(Pcur->nama, nama) == 0) {
+		}else{
+			if (strcmp(Pcur->nama,nama) == 0)
+			{
 				return Pcur;
 			}
-			Resmi = true;
-		}
-			else {
-				Pcur = Pcur->nodePR;
+			if (Pcur->nodeNB != NULL)
+			{
+				Pcur = Pcur->nodeNB;
+				Resmi = true;
+			} else {
+				Pcur = Pcur->nodeFS;
 				Resmi = false;
 			}
 		}
-	return Pcur;
+		
 	}
+	return NULL; 
+	
+
+}
 
 
 void deleteNode(Root X, infotype nama){
-
-
   Node nSearch;
   Node nParent;
   Node nChild;
   nSearch = searchNode(X,nama);
-  nParent = nSearch->nodePR;
-  nChild = nSearch->nodeFS;
   if (nSearch == NULL){
     	 printf("Nama nya tidak ditemukan");
     }
-	 else if (isRoot(X,nSearch)){
-    	  Node temp;
+	 else if (isRoot(X,nSearch)){ // Jika raja mati
+    	  Node temp; // Anak Pertama Raja (Pangeran)
           temp = X.root->nodeFS;
 	   		 if (temp->nodeFS == NULL) {
-				temp->nodeNB->nodePR = temp;
+				 if(temp->nodeNB != NULL){
+					temp->nodeNB->nodePR = temp;// Jika Pangeran tidak mempunyai anak, saudara ke dua menjadi FS
+				 } 
 			}
-	    temp->nodeFS->nodeNB->nodePR = temp->nodeFS;
-	    temp->nodeFS->nodeNB = temp->nodeNB;
-	    temp->nodeNB->nodePR = temp;
-	    temp->nodePR = NULL;
-	    X.root = temp;
-		} else {	
-		Node temp;
-		Node tempPR;
-		Node tempFS;
-		Node tempNB;
-	    if (nSearch == nParent->nodeFS){
-			temp = nSearch;
-       		tempPR = temp->nodePR;
-             tempFS = temp->nodeFS;
-             tempNB = temp->nodeNB;
-			tempPR->nodeFS = tempFS;
-		 
-		 
-while (temp->nodeFS != NULL) {
-            temp->nodeFS->nodeNB = temp->nodeNB;
-			  temp = temp->nodeFS;
-}
-
-}else {
-			temp = nParent->nodeFS ;
-			while (temp->nodeNB != nSearch){ 
-            temp = temp->nodeNB;
-		  }
- 	            
-	if (nSearch->nodeFS == NULL){
-		temp->nodeNB = temp->nodeNB->nodeNB;
-	}else {
-		nSearch->nodeFS->nodeNB = nSearch->nodeNB;
-		temp->nodeNB = nSearch->nodeFS;
-		temp = nSearch->nodeFS;
- 	         while (temp != NULL){
-                    temp->nodeFS->nodeNB = temp->nodeNB;
-			  		temp = temp->nodeFS;
+	    	if(temp->nodeFS->nodeNB != NULL){
+				temp->nodeFS->nodeNB->nodePR = temp->nodeFS; // Anak dari Pangeran, menjadi orang tua bagi saudaranya
 			} 
-	}
-}
+	    temp->nodeFS->nodeNB = temp->nodeNB;// Anak pertama dari Pangeran, menjadi saudara dari pangeran lainnya
+	    temp->nodeNB->nodePR = temp; // Anak pertama raja menjadi orang tua bagi saudaranya
+	    temp->nodePR = NULL; // orang tua anak pertama dihilangkan
+	    X.root = temp; // anak pertama menjadi raja
+	} else if(nSearch->nodePR->nodeFS == nSearch){ // Jika yang mati anak pertama dari suatu node (FChild)
+		if(nSearch->nodeFS != NULL){ // Jika FChild memiliki anak
+			nSearch->nodeFS->nodePR = nSearch->nodePR; // Orang tua dari anak FChild menjadi orang tua FChild
+			nSearch->nodePR->nodeFS = nSearch->nodeFS; // Anak pertama dari Orang tua Fchild menjadi anak pertama dari Fchild 
 		}
-free(nSearch);
+	} 
 	}
-
+du
 
 
 void garisSuksesi(Root X)
@@ -164,20 +136,21 @@ void garisSuksesi(Root X)
 	index = 1;
 	Resmi = true;
 	Pcur = X.root;
-	
+	if(Pcur->nodeFS != NULL) {
+	printf("=============\nGARIS SUKSESI\n=============\n");
 	while (Pcur != NULL) {
 		if (Pcur->nodeFS != 0 && Resmi) {
 			Pcur = Pcur->nodeFS;
 			if (!isRoot(X,Pcur))
 			{
-				printf("%d. &s", index, Pcur->nama);
+				printf("%d. %s", index, Pcur->nama);
 				index++;
 			}
 		} else if (Pcur->nodeNB != NULL) {
 			Pcur = Pcur->nodeNB;
 			if (!isRoot(X,Pcur))
 			{
-				printf("%d. &s", index, Pcur->nama);
+				printf("%d. %s", index, Pcur->nama);
 				index++;
 			}
 			Resmi = true;
@@ -185,6 +158,9 @@ void garisSuksesi(Root X)
 			Pcur = Pcur->nodePR;
 			Resmi = false;
 		}
+	}
+	} else {
+		printf("RAJA BELUM MEMPUNYAI PENERUS");
 	}
 }
 
@@ -290,6 +266,7 @@ void displayDetailKingdom(Root X)
 				break;
 			case 2:
 				garisSuksesi(X);
+				system("pause");
 				break;
 			case 3:
 				displayFamily(X);

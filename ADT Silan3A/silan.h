@@ -58,7 +58,7 @@ bool isEmpty(Node *node);
 bool isRoot(Root root, Node node);
 /* Mengecek apakah suatu node tersebut adalah root atau bukan */
 
-void insertNode(infotype nama, bool jenisKelamin, Node parent);
+void insertNode(infotype nama, bool jenisKelamin, Node  parent);
 /* Membuat node dan memasukkan value kedalam node tersebut lalu mengembalikan node tersebut */
 
 Node searchNode(Root X, infotype nama);

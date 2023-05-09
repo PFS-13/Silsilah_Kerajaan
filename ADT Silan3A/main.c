@@ -40,8 +40,15 @@ int main() {
 					printf("Masukkan Nama Bangsawan : ");
 					scanf( "%s", name);
 					
-					printf("Jenis Kelamin (L/P) : ");
-					scanf(" %c", &jk);
+					do{
+						printf("Jenis Kelamin (L/P) : ");
+						scanf(" %c", &jk);
+						if(jk != 'L' && jk != 'P' && jk != 'l' && jk != 'P' ){
+							printf("data jenis kelamin tidak sesuai, silahkan masukkan yang sesuai\n");
+						}
+					} while (jk != 'L' && jk != 'P' && jk != 'l' && jk != 'P' );
+					
+					
 					infotype status;
 					if(jk == 'L' || jk == 'l'){
 						G = TRUE;
@@ -64,6 +71,9 @@ int main() {
 					system("pause");
 				}else {
 					Node pr;
+					infotype child;
+					child = (infotype) malloc(sizeof(infotype));
+					parent = (infotype) malloc(sizeof(infotype));
 					do
 					{
 					printf("Masukkan Nama Orang Tua Bangsawan : ");
@@ -74,16 +84,16 @@ int main() {
 						} else if(isSingle(pr)){
 							printf("Orang ini belum menikah, belum bisa mempunyai anak\n");
 						}
-					} while (pr == NULL);
+					} while (pr == NULL || isSingle(pr));
 
 					do
 					{
-					printf("Nama Bangsawan : ");
-					scanf("%s", name);
-						if(searchNode(king,name) != NULL){
+					printf("Nama Anak : ");
+					scanf("%s", child);
+						if(searchNode(king,child) != NULL){
 							printf("Nama sudah ada, silahkan masukkan nama lain\n");
 						}
-					} while (searchNode(king,name) != NULL);
+					} while (searchNode(king,child) != NULL);
 					
 					do
 					{
@@ -102,13 +112,19 @@ int main() {
 						G = FALSE;
 						gender = "Putri";
 					}
-					Node news = searchNode(king,parent);
-					insertNode(name,G,news);
-					printf("\nSelamat atas kelahiran nya %s, %s dari %s dan %s, may god bless this family forever",name,gender,news->nama,news->mate);
+					insertNode(child,G,pr);
+					printf("\nSelamat atas kelahiran nya %s, %s dari %s dan %s, may god bless this family forever\n",pr->nodeFS->nama,gender,pr->nama,pr->mate);
 					system("pause");
 				}
 				break;
 			case 2:
+			if (king.root == NULL)
+			{
+				printf("TENTUKAN DULU PEMIMPIN KERAJAAN");
+			}else {
+
+			
+			
 			infotype bride;
 			bride = (infotype) malloc(sizeof(infotype));
 			Node mates;
@@ -134,19 +150,31 @@ int main() {
 				setMate(mates,soulmate);
 				printf("Selamat pernikahan atas %s dengan %s, may be forever even after death\n",bride,soulmate);
 				system("pause");
+				}
 				break;
 			case 3:
+			if (king.root == NULL)
+			{
+				printf("TENTUKAN DULU PEMIMPIN KERAJAAN");
+			}else {
 				infotype Delete;
 			Delete = (infotype) malloc(sizeof(infotype));
 				printf("Siapa bangsawan yang akan ada bunuh ? ");
 				scanf( "%s", Delete);
 				deleteNode(king,Delete);
+				}
 				break;
 			case 4:
+			if (king.root == NULL)
+			{
+				printf("TENTUKAN DULU PEMIMPIN KERAJAAN");
+			}else {
 				displayDetailNode();
-				break;
+				}
+			break;
 			case 5:
 				displayDetailKingdom(king);
+				system("pause");
 				break;
 			case 6:
 				displayMenuExit();
