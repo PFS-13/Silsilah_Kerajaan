@@ -17,7 +17,7 @@ int main() {
 	
 	for(;;) {
 		system("cls");
-		printf("\n\t\t===== WELCOME TO THE KINGDOM OF ENGLAND =====\n\n");
+		printf("\n\t\t===== WELCOME TO THE KINGDOM OF WIBU =====\n\n");
 		printf("\t[1] Tambah Bangsawan\n");
 		printf("\t[2] Tambah Pasangan\n");
 		printf("\t[3] Bunuh Bangsawan\n");
@@ -104,7 +104,7 @@ int main() {
 						if(jk != 'L' && jk != 'P' && jk != 'l' && jk != 'P' ){
 							printf("data jenis kelamin tidak sesuai, silahkan masukkan yang sesuai\n");
 						}
-					} while (jk != 'L' && jk != 'P' && jk != 'l' && jk != 'P' );
+					} while (jk != 'L' && jk != 'P' && jk != 'l' && jk != 'p' );
 					infotype gender;
 					if(jk == 'L' || jk == 'l'){
 						G = TRUE;
@@ -168,7 +168,7 @@ int main() {
 				Delete = (infotype) malloc(sizeof(infotype));
 				printf("Siapa bangsawan yang akan ada bunuh ? ");
 				scanf( "%s", Delete);
-				deleteNode(king,Delete);
+				deleteNode(&king,Delete);
 				}
 				break;
 			case 4:

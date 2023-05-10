@@ -65,7 +65,7 @@ void insertNode(infotype nama, bool jenisKelamin, Node  parent);
 Node searchNode(Root X, infotype nama);
 /* Mencari suatu Node berdasarkan subvar nama lalu akan mengembalikan node tersebut jika ketemu */
 
-void deleteNode(Root X, infotype nama);
+void deleteNode(Root * X, infotype nama);
 /* Menghapus Node dari suatu Tree */
 /* I.S : Node belum terhapus */
 /* F.S : Node sudah terhapus */
@@ -75,7 +75,7 @@ void garisSuksesi(Root X);
 /* I.S : Node sudah ada */
 /* F.S : Node sudah terurut secara preOrder */
 
-void displayFamily(Root X);
+void displayFamily(Node X, int level);
 /* Menampilkan silsilah kerajaan saat ini (secara keseluruhan yang masih hidup) */
 /* I.S : Silsilah kerajaan belum tampil */
 /* F.S : Silsilah kerajaan sudah tampil */
