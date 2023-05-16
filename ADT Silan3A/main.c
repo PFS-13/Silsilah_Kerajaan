@@ -14,7 +14,7 @@ int main() {
 	king.root = NULL;
 	char pilMenu[10];
 	int tahun;
-	//introSilan();
+	introSilan();
 	printf("\n\tTahun Kerajaan : ");
 	scanf("%d", &tahun);
 	
@@ -84,7 +84,7 @@ int main() {
 					lead->mate = NULL;
 					king.root = lead;
 					printf("\n\tSelamat Kepada %s Telah Menjadi %s Baru di Kerajaan Ini.\n\n\t", king.root->nama,status);
-					 //system("pause");
+					 system("pause");
 				}else {
 					Node pr;
 					infotype child;
@@ -133,7 +133,7 @@ int main() {
 					}
 					insertNode(child,G,pr);
 					printf("\n\tPada tahun %d, telah lahir '%s', %s dari :\n\t\t\t-%s\n\t\t\t-%s .\n\n\t",tahun,child,gender,pr->nama,pr->mate);
-					 //system("pause");
+					 system("pause");
 				}
 				break;
 			case '2':
@@ -142,7 +142,7 @@ int main() {
 				system("cls");
 				printf("\n\t=============================== MEMILIH PASANGAN ===============================\n\n");
 				printf("\tTENTUKAN DULU PEMIMPIN KERAJAAN\n\n\t");
-				 //system("pause");
+				 system("pause");
 			}else {
 			infotype bride;
 			bride = (infotype) malloc(sizeof(infotype));
@@ -159,7 +159,7 @@ int main() {
 							printf("\tNama Tidak Ada, Silahkan Masukkan Nama Lain.\n");
 						} else if(mates->mate != NULL){
 							printf("\tBangsawan Ini Sudah Memiliki Pasangan, Tidak Bisa Menikah Lagi.\n");
-							 //system("pause");
+							 system("pause");
 						}else if(mates->age < 6){
 							printf("\tUsia masih tidak mencukupi, Silahkan Masukkan umur kembali.\n");
 						}
@@ -187,7 +187,7 @@ int main() {
 					
 				setMate(mates,soulmate,umur);
 				printf("\n\tPada tahun %d, %s dan %s menikah.\n\n\t",tahun,bride,soulmate);
-				 //system("pause");
+				 system("pause");
 				}
 				break;
 			case '3':
@@ -196,7 +196,7 @@ int main() {
 				system("cls");
 				printf("\n\t========================= BUNUH BANGSAWAN =========================\n\n");
 				printf("\tTENTUKAN DULU PEMIMPIN KERAJAAN\n\n\t");
-				 //system("pause");
+				 system("pause");
 			}else {
 				system("cls");
 				printf("\n\t========================= BUNUH BANGSAWAN =========================\n\n");
@@ -205,7 +205,7 @@ int main() {
 				printf("\tSiapa Bangsawan yang Akan Dibunuh ? ");
 				scanf( "%s", Delete);
 				deleteNode(&king,Delete);
-				 //system("pause");
+				 system("pause");
 				}
 				break;
 			case '4':
@@ -213,33 +213,31 @@ int main() {
 			        system("cls");
 					printf("\n\t==================== DETAIL BANGSAWAN ====================\n\n");
 			        printf("\tTENTUKAN DULU PEMIMPIN KERAJAAN\n\n\t");
-			         //system("pause");
+			         system("pause");
 			    } else {
 			        infotype namaNode;
 					namaNode = (infotype) malloc(sizeof(infotype));
 			        Node info;
 			        system("cls");
-			        //do {
+			        
 			            printf("\tNama Bangsawan : ");
 			            scanf("%s", namaNode);
 			            info = searchNode(king, namaNode);
 			            if (info == NULL) {
 			                printf("\n\t========================= TIDAK DITEMUKAN ==========================\n\n");
 			                printf("\n\tNama Bangsawan Salah.\n\n\t");
-			                 //system("pause");
+			                 system("pause");
 			            } else {
 			                displayDetailNode(king,info);
 			            }
-			        //} while (info == NULL || info->mate == NULL);
 			    }
 			    break;
-			// break;
 			case '5':
 			if (king.root == NULL) {
 			        system("cls");
 					printf("\n\t==================== DETAIL BANGSAWAN ====================\n\n");
 			        printf("\tTENTUKAN DULU PEMIMPIN KERAJAAN\n\n\t");
-			         //system("pause");
+			         system("pause");
 			} else {
 				displayDetailKingdom(tahun,king);
 
@@ -250,7 +248,7 @@ int main() {
 			        system("cls");
 					printf("\n\t==================== DETAIL BANGSAWAN ====================\n\n");
 			        printf("\tTENTUKAN DULU PEMIMPIN KERAJAAN\n\n\t");
-			         //system("pause");
+			         system("pause");
 			} else {
 			system("cls");
 			int tambah ;
@@ -263,7 +261,7 @@ int main() {
 					penambahanTahun(&tahun,tambah,king);
 					printf("\n\tPenambahan tahun telah berhasil\n\tTahun saat ini : %d\n\n\t",tahun);
 				}
-				 //system("pause");
+				 system("pause");
 			}
 				break;
 			case '0':
@@ -271,7 +269,7 @@ int main() {
 				break;
 			default:
 				printf("\n\tPilihan tidak ada, silahkan Pilih Lagi!\n\n\t");
-				 //system("pause");
+				 system("pause");
 				break;
 		}
 	}
