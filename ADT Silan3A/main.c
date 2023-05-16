@@ -161,7 +161,7 @@ int main() {
 							printf("\tBangsawan Ini Sudah Memiliki Pasangan, Tidak Bisa Menikah Lagi.\n");
 							 system("pause");
 						}else if(mates->age < 6){
-							printf("\tUsia masih tidak mencukupi, Silahkan Masukkan umur kembali.\n");
+							printf("\tUsia masih tidak mencukupi\n");
 						}
 					} while (mates == NULL || mates->age < 6);
 					
