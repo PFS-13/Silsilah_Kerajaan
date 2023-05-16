@@ -44,6 +44,8 @@ void insertNode(infotype nama, bool jenisKelamin, Node parent)
     newNode->nodeFS = NULL;
     newNode->nodeNB = NULL;
     newNode->nodePR = parent;
+	newNode->age = 0;
+	newNode->mateAge = NULL;
     if (parent->nodeFS != NULL) {
     	Node temp;
     	temp = parent->nodeFS;
@@ -95,21 +97,26 @@ void deleteNode(Root * X, infotype nama){
   bool del = true;
   nDel = searchNode(*X,nama);
   if (nDel == NULL){
-    	 printf("'%s' tidak ditemukan", nama);
+    	 printf("\n\tNama bangsawan tidak ditemukan\n\t", nama);
 		 system("pause");
 		 del = false;
-    } else if(isRoot(*X,nDel)){
+    } else if(isRoot(*X,nDel)){ // JIKA RAJA WAFAT
 		if (nDel->jenisKelamin)
 		{
-			printf("Raja telah dibunuh ....\n");
+			printf("\tRaja telah wafat ...\n");
 		} else{
-			printf("Ratu telah dibunuh ....\n");
+			printf("\tRatu telah wafat ...\n");	
 		}
 		
 		
 		Node nextKing = nDel->nodeFS;
 		(*X).root = nextKing;
-		printf("Kini pemimpin baru telah diangkat, yakni %s\n", (*X).root->nama);
+		if(nextKing == NULL){
+		printf("\tTIDAK ADA PENERUS KERAJAAN, BUTUH PEMIMPIN BARU\n\n\t");
+		} else {
+			printf("\tKini pemimpin baru telah diangkat, yakni %s\n", (*X).root->nama);
+			printf("\tTHE ERA OF %s HAS BEGUN !!!!!\n\n\t",(*X).root->nama);
+		
 		nextKing->nodePR = NULL;
 		if (nextKing->nodeFS != NULL) 
 		{
@@ -122,7 +129,6 @@ void deleteNode(Root * X, infotype nama){
 			{
 					if(Current->nodeNB != NULL){
 						myBro = Current->nodeNB;
-					
 					} else {
 						myBro = NULL;
 					}
@@ -133,11 +139,24 @@ void deleteNode(Root * X, infotype nama){
 						if (Current->nodeNB != NULL)
 						{
 							Current->nodeFS = Current->nodeNB;
-							Current->nodeNB->nodePR = Current;
+							Node bro =  Current->nodeNB;
+							while (bro != NULL)
+							{
+								bro->nodePR = Current;
+								bro = bro->nodeNB;
+							}
 							loop = false;
 						}
-					} 
+					}
+						
 						Current->nodeNB = brother;
+						Node bro =  Current->nodeNB;
+						while (bro != NULL)
+						{
+							bro->nodePR = Current->nodePR;
+							bro = bro->nodeNB;
+						}
+						
 						brother = myBro;
 					
 					Current = Current->nodeFS;
@@ -145,17 +164,23 @@ void deleteNode(Root * X, infotype nama){
 			
 
 		} else if (nextKing->nodeNB != NULL){
-			nextKing->nodeNB->nodePR = nextKing;
-			nextKing->nodeFS = nextKing->nodeNB;
-
+						nextKing->nodeFS = nextKing->nodeNB;
+						nextKing->nodeNB->nodePR = nextKing; 
+						Node bro =  nextKing->nodeNB;
+						while (bro != NULL)
+						{
+							bro->nodePR = nextKing;
+							bro = bro->nodeNB;
+						}
+						nextKing->nodeNB = NULL;
+			
 		} 
-
-		printf("HIDUP %s !!!!!\n",(*X).root->nama);
-	    system("pause");
+	}
 	}
 	
-	// Jika yang mati adalah anak pertama dari suatu node
+	// JIKA YANG MATI ADALAH ANAK PERTAMA
 	else if(nDel->nodePR->nodeFS == nDel){ 
+		printf("\n\n\tBangsawan %s Telah Meninggal.\n\n\t", nDel->nama );
 		if(nDel->nodeFS != NULL){ 				   // Jika nDel memiliki anak 
 			 // fs merupakan anak pertama nDel
 			nDel->nodeFS->nodePR = nDel->nodePR; // Orang tua dari fs diganti menjadi orang tua nDel
@@ -170,7 +195,6 @@ void deleteNode(Root * X, infotype nama){
 			{
 					if(Current->nodeNB != NULL){
 						myBro = Current->nodeNB;
-					
 					} else {
 						myBro = NULL;
 					}
@@ -181,24 +205,40 @@ void deleteNode(Root * X, infotype nama){
 						if (Current->nodeNB != NULL)
 						{
 							Current->nodeFS = Current->nodeNB;
-							Current->nodeNB->nodePR = Current;
+							Node bro =  Current->nodeNB;
+							while (bro != NULL)
+							{
+								bro->nodePR = Current;
+								bro = bro->nodeNB;
+							}
 							loop = false;
 						}
-					} 
+					}
+						
 						Current->nodeNB = brother;
+						Node bro =  Current->nodeNB;
+						while (bro != NULL)
+						{
+							bro->nodePR = Current->nodePR;
+							bro = bro->nodeNB;
+						}
+						
 						brother = myBro;
 					
 					Current = Current->nodeFS;
 			}
-		
+			
 	} else {
 		if(nDel->nodeNB != NULL){
-			nDel->nodeNB->nodePR = nDel->nodePR;
+			nDel->nodePR->nodeFS = nDel->nodeNB;
+		} else {
+			nDel->nodePR->nodeFS = NULL;
 		}
 	}
 
 	} // JIKA YANG MATI BUKAN ANAK PERTAMA 
 	else if(nDel->nodePR->nodeFS != nDel){
+		printf("\n\n\tBangsawan %s Telah Meninggal.\n\n\t", nDel->nama );
 		Node bDelete = nDel->nodePR->nodeFS;
 		while (bDelete->nodeNB != nDel)
 		{
@@ -207,7 +247,6 @@ void deleteNode(Root * X, infotype nama){
 		if (nDel->nodeFS != NULL ) // jika nDel memiliki anak
 		{
 			bDelete->nodeNB = nDel->nodeFS;
-			printf("saudara sebelum dari %s ialah : %s\n",nDel->nama,bDelete->nama);
 			Node Current = nDel;
 			Node brother = Current->nodeNB;
 			Node myBro;
@@ -217,7 +256,6 @@ void deleteNode(Root * X, infotype nama){
 			{
 					if(Current->nodeNB != NULL){
 						myBro = Current->nodeNB;
-					
 					} else {
 						myBro = NULL;
 					}
@@ -228,22 +266,37 @@ void deleteNode(Root * X, infotype nama){
 						if (Current->nodeNB != NULL)
 						{
 							Current->nodeFS = Current->nodeNB;
-							Current->nodeNB->nodePR = Current;
+							Node bro =  Current->nodeNB;
+							while (bro != NULL)
+							{
+								bro->nodePR = Current;
+								bro = bro->nodeNB;
+							}
 							loop = false;
 						}
-					} 
+					}
+						
 						Current->nodeNB = brother;
+						Node bro =  Current->nodeNB;
+						while (bro != NULL)
+						{
+							bro->nodePR = Current->nodePR;
+							bro = bro->nodeNB;
+						}
+						
 						brother = myBro;
 					
 					Current = Current->nodeFS;
 			}
+			
+				
 				} else if (nDel->nodeFS == NULL){
-			bDelete->nodeNB = nDel->nodeNB;
+					bDelete->nodeNB = nDel->nodeNB;
 		}
 	}
 	if (del)
 	{
-		nDel->nodeFS = NULL;
+	nDel->nodeFS = NULL;
 	nDel->nodeNB = NULL;
 	nDel->nodePR = NULL;
 	free(nDel);
@@ -251,24 +304,6 @@ void deleteNode(Root * X, infotype nama){
 	
 	
 }
-	/*
-	ROOT
-	else if (isRoot(X,nDel)){ // Jika raja mati
-    	  Node temp; // Anak Pertama Raja (Pangeran)
-          temp = X.root->nodeFS;
-	   		 if (temp->nodeFS == NULL) {
-				 if(temp->nodeNB != NULL){
-					temp->nodeNB->nodePR = temp;// Jika Pangeran tidak mempunyai anak, saudara ke dua menjadi FS
-				 } 
-			}
-	    	if(temp->nodeFS->nodeNB != NULL){
-				temp->nodeFS->nodeNB->nodePR = temp->nodeFS; // Anak dari Pangeran, menjadi orang tua bagi saudaranya
-			} 
-	    temp->nodeFS->nodeNB = temp->nodeNB;// Anak pertama dari Pangeran, menjadi saudara dari pangeran lainnya
-	    temp->nodeNB->nodePR = temp; // Anak pertama raja menjadi orang tua bagi saudaranya
-	    temp->nodePR = NULL; // orang tua anak pertama dihilangkan
-	    X.root = temp; // anak pertama menjadi raja
-	*/
 
 
 void garisSuksesi(Root X)
@@ -340,19 +375,42 @@ void displayFamily(Node X, int Level)
     }
 }
 
-int countChild(Node node)
+int countChild(Root X ,Node node)
 /* Menghitung jumlah anak dari suatu node */
 {
-	int jml = 0;
-    if(node->nodeFS != NULL) { // jika ada anak pertama
-        Node child;
-        child = node->nodeFS;
-        while(child != NULL) { // cek apakah ada saudara sebelah kanan dari anak pertama
-            jml++; // jika ada, tambahkan 1 pada jumlah anak
-            child = child->nodeNB; // lanjut ke saudara sebelah kanan selanjutnya
-        }
-    }
-    return jml; // kembalikan jumlah anak
+	Node Pcur;
+	bool Resmi;
+	int index;
+	
+	index = 0;
+	Resmi = true;
+	Pcur = X.root;
+	if(Pcur->nodeFS != NULL) {
+		while (Pcur != NULL) {
+			if (Pcur->nodeFS != 0 && Resmi) {
+				Pcur = Pcur->nodeFS;
+				if (!isRoot(X,Pcur))
+				{
+					if (strcmp(node->nama,Pcur->parent) == 0)
+					{ 
+						index++;
+					}
+					
+				}
+			} else if (Pcur->nodeNB != NULL) {
+				Pcur = Pcur->nodeNB;
+				if (!isRoot(X,Pcur))
+				{
+					if (strcmp(node->nama,Pcur->parent) == 0)
+					{ index++;}
+				}
+				Resmi = true;
+			} else {
+				Pcur = Pcur->nodePR;
+				Resmi = false;
+			}
+		}
+	} return index;
 }
 
 bool isSingle(Node Person)
@@ -361,7 +419,7 @@ bool isSingle(Node Person)
 	return Person->mate == NULL;
 }
 
-void setMate(Node Person, infotype mate)
+void setMate(Node Person, infotype mate, int umur)
 /* Mengisi value subvar mate dari suatu node */
 /* I.S : Subvar mate pada node masih null */
 /* F.S : Subvar mate pada node sudah terisi value */
@@ -370,6 +428,7 @@ void setMate(Node Person, infotype mate)
         printf("Orang ini sudah memiliki pasangan.\n");
     } else {
         Person->mate = mate;
+		Person->mateAge = umur;
     }
 }
 
@@ -401,42 +460,42 @@ void displayRules()
 }
 
 
-void displayDetailKingdom(Root X)
+void displayDetailKingdom(int tahun,Root X)
 /* Menampilkan pilihan ingin melihat aturan atau silsilah kerajaan sebelumnya */
 /* I.S : Aturan atau silsilah kerajaan belum tampil di layar */
 /* F.S : Aturan atau silsilah kerajaan sudah tampil di layar */
 {
-	int pilih;
+	char pilih[10];
 	for(;;) {
 		system("cls");
 		printf("\n\t============= DETAIL KERAJAAN =============\n");
+		printf("\tTahun\t\t: %d\n",tahun);
 		printf("\tNama Kerajaan\t: Kingdom of England\n");	
-		printf("\tNama Raja/Ratu\t:%s \n\n", X.root->nama);
+		printf("\tNama Raja/Ratu\t: %s \n\n", X.root->nama);
 		printf("\t=============== DETAIL LAIN ===============\n");
 		printf("\t[1] Tampil Aturan Kerajaan\n");
 		printf("\t[2] Tampil Garis Suksesi\n");
 		printf("\t[3] Tampil Silsilah Kerajaan Saat Ini\n");
-		printf("\t[4] Tampil Silsilah Kerajaan Sebelumnya\n");
-		printf("\t[5] Keluar\n\n");
+		printf("\t[0] Keluar\n\n");
 		printf("\tMasukkan pilihan : ");
-		scanf("%d", &pilih);
-					
-		switch(pilih) {
-			case 1:
+		gets(pilih);
+		char choice = pilih[0];
+		switch(choice) {
+			case '1':
 				displayRules();
 				break;
-			case 2:
+			case '2':
 				garisSuksesi(X);
 				system("pause");
 				break;
-			case 3:
+			case '3':
 				system("cls");
         		printf("\n\t============= SILSILAH KERAJAAN =============\n\n");
                 displayFamily(X.root, 0);
                 printf("\n\n\t");
                 system("pause");
 				break;
-			case 5:
+			case '0':
 				return;
 			default:
 				printf("\n\tPilihanmu salah, pilih lagi!\n\t");
@@ -456,10 +515,18 @@ void displayDetailNode(Root X,Node node)
 		if (isRoot(X,node))
 		{
 			printf("\tNama Bangsawan\t: %s\n", node->nama);
+			printf("\tUsia\t\t: %d\n",node->age);
 			
 		} else {
-			printf("\tNama Bangsawan\t: %s\n", node->nama);
-			printf("\tNama Orang Tua\t: %s\n", node->parent);
+			infotype gender;
+			printf("\tUsia\t\t: %d\n",node->age);
+			if(node->jenisKelamin == true){
+				gender = "son";
+			}else {
+				gender = "daughter";
+			}
+			printf("\tNama Bangsawan\t: %s %s of %s \n", node->nama,gender,node->parent);
+			printf("\tPewaris Tahta \t: ke-%d\n", detailPenerus(X, node->nama));
 		}
 		if (isSingle(node))
 		{
@@ -467,31 +534,53 @@ void displayDetailNode(Root X,Node node)
 		} else {
 			printf("\tStatus \t\t: Sudah Menikah\n");
 			printf("\tPasangan \t: %s\n", node->mate);
-			int sumChildren = countChild(node);
+			printf("\tUsia Pasangan \t: %d\n", node->mateAge);
+			int sumChildren = countChild(X,node);
 			printf("\tJumlah Anak\t: %d\n", sumChildren);
-			if (sumChildren > 0){
-				Node child = node->nodeFS;
-				while (child != NULL)
-				{
-					if (strcmp(node->nama,child->parent) == 0)
-					{
-						printf("\n\t- %s ",child->nama);
-					}
-					child = child->nodeNB;
-				}
-				
-			}
-			printf("\n\t");
+			printf("\n");
 		}
 		system("pause");
-		
-		
-		
-	
-		
 //	}
 }
 
+int detailPenerus(Root X, infotype nama)
+/* Menampilkan urutan garis suksesi silsilah secara preOrder */
+/* I.S : Node sudah ada */
+/* F.S : Node sudah terurut secara preOrder */
+{
+	Node Pcur;
+	bool Resmi;
+	int index;
+	
+	index = 1;
+	Resmi = true;
+	Pcur = X.root;
+	if(Pcur->nodeFS != NULL) {
+		while (Pcur != NULL) {
+			if (Pcur->nodeFS != 0 && Resmi) {
+				Pcur = Pcur->nodeFS;
+				if (!isRoot(X,Pcur))
+				{
+					if (strcmp(nama,Pcur->nama) == 0)
+					{ return index;}
+					index++;
+				}
+			} else if (Pcur->nodeNB != NULL) {
+				Pcur = Pcur->nodeNB;
+				if (!isRoot(X,Pcur))
+				{
+					if (strcmp(nama,Pcur->nama) == 0)
+					{ return index;}
+					index++;
+				}
+				Resmi = true;
+			} else {
+				Pcur = Pcur->nodePR;
+				Resmi = false;
+			}
+		}
+	} 
+}
 
 void displayMenuExit()
 /* Menampilkan tampilan menu keluar */
@@ -505,10 +594,10 @@ void displayMenuExit()
     printf("\t[1] Kembali\n");
     printf("\t[Ketik Apapun] Yakin\n\n");
     printf("\tMasukkan pilihan : ");
-    scanf("%d", &pil);
+    scanf("%c", &pil);
 
     switch(pil) {
-        case 1: 
+        case '1': 
         	system("cls");
             return;
         default:
@@ -534,10 +623,94 @@ void displayKingdom()
 	while ((fgets(Text, 1000, fp)) != NULL) {
 		printf("%s\r", Text);
 	}
-	
 	fclose(fp);
 	Sleep(500);
 	printf("\n\n\t");
 	system("pause");
+	system("cls");
+}
+
+void penambahanTahun(int * tahun, int penambahan, Root X){
+	*tahun += penambahan;
+	Node Pcur = X.root;
+    Pcur->age = Pcur->age + penambahan;
+	Pcur->mateAge = Pcur->mateAge +  penambahan;
+	bool Resmi = true;
+	if(Pcur->nodeFS != NULL) {
+		while (Pcur != NULL) {
+			if (Pcur->nodeFS != 0 && Resmi) {
+				Pcur = Pcur->nodeFS;
+				if(!isRoot(X,Pcur)){
+                Pcur->age = Pcur->age + penambahan;
+				Pcur->mateAge = Pcur->mateAge +  penambahan;
+				}
+				
+			} else if (Pcur->nodeNB != NULL) {
+				Pcur = Pcur->nodeNB;
+				if(!isRoot(X,Pcur)){
+                Pcur->age = Pcur->age + penambahan;
+				Pcur->mateAge = Pcur->mateAge +  penambahan;
+				}
+				Resmi = true;
+			} else {
+				Pcur = Pcur->nodePR;
+				Resmi = false;
+			}
+		}
+	} 
+}
+
+void displayNamaKingdom()
+/* Menampilkan desain nama kerajaan */
+/* I.S : Desain nama kerajaan belum tampil di layar */
+/* F.S : Desain nama kerajaan sudah tampil di layar*/
+{
+	FILE *fp;
+	char Text[999];
+	
+	fp = fopen("Assets//NamaKerajaan.txt", "rt");
+	
+	if (fp == NULL) {
+		printf("File tidak ditemukan\r\t");
+		exit(1);
+	}
+	
+	while ((fgets(Text, 1000, fp)) != NULL) {
+		printf("%s\r", Text);
+	}
+	
+	fclose(fp);
+	Sleep(500);
+	printf("\n\n\t");
+}
+
+void gotoxy(int X, int y)
+/* Mengatur titik koordinat kursor */
+/* I.S : Titik koordinat kursor belum diatur */
+/* F.S : Titik koordinat kursor sudah diatur */
+{
+	COORD coord;
+	coord.X = X;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void introSilan()
+/* Menampilkan identitas kelompok */
+/* I.S : Identitas kelompok belum tampil di layar */
+/* F.S : Identitas kelompok sudah tampil di layar*/
+{
+	const char sentence[] = "Asri Husnul Rosadi\t221524035\n\t\t\t\t\tM. Fathur Rabbani\t221524045\n\t\t\t\t\tNaia Siti Az-zahra\t221524052\n\n\t\t\t\t\t\t\t1B-D4IT\n";
+	int i;
+
+	gotoxy(40, 10);
+	for (i = 0; sentence[i]!=0 ; i++) {
+		Sleep(50);
+		printf("%c", sentence[i]);
+	}
+	Sleep(100);
+
+	system("cls");
+	displayKingdom();
 	system("cls");
 }

@@ -36,8 +36,10 @@ typedef char* infotype;
 typedef struct TNode * Node;
 typedef struct TNode{ 
 	infotype nama;
+	int age;
 	bool jenisKelamin;
-	infotype mate;
+    infotype mate;
+	int mateAge;
 	infotype parent;
 	Node nodeFS;
 	Node nodePR;
@@ -80,13 +82,13 @@ void displayFamily(Node X, int level);
 /* I.S : Silsilah kerajaan belum tampil */
 /* F.S : Silsilah kerajaan sudah tampil */
 
-int countChild(Node node);
+int countChild(Root X, Node node);
 /* Menghitung jumlah anak dari suatu node */
 
 bool isSingle(Node Person);
 /* Mengecek apakah value subvar mate dari node tersebut terisi atau null */
 
-void setMate(Node Person, infotype mate);
+void setMate(Node Person, infotype mate, int umur);
 /* Mengisi value subvar mate dari suatu node */
 /* I.S : Subvar mate pada node masih null */
 /* F.S : Subvar mate pada node sudah terisi value */
@@ -101,10 +103,12 @@ void displayDetailNode(Root X,Node node);
 /* I.S : Detail suatu node belum tampil di layar */
 /* F.S : Detail suatu node sudah tampil di layar */
 
-void displayDetailKingdom(Root X);
+void displayDetailKingdom(int tahun,Root X);
 /* Menampilkan pilihan ingin melihat aturan atau silsilah kerajaan sebelumnya */
 /* I.S : Aturan atau silsilah kerajaan belum tampil di layar */
 /* F.S : Aturan atau silsilah kerajaan sudah tampil di layar */
+
+int detailPenerus(Root X, infotype nama);
 
 void displayMenuExit();
 /* Menampilkan tampilan menu keluar */
@@ -116,4 +120,23 @@ void displayKingdom();
 /* I.S : Desain kerajaan belum tampil di layar */
 /* F.S : Desain kerajaan sudah tampil di layar */
 
+void penambahanTahun(int * tahun, int penambahan, Root X);
+/* Menambah tahun kerajaan */
+/* I.S : Tahun masih sama  */
+/* F.S : Tahun sudah bertambah sesuai dengan penambahan */
+
+void displayNamaKingdom();
+/* Menampilkan desain nama kerajaan */
+/* I.S : Desain nama kerajaan belum tampil di layar */
+/* F.S : Desain nama kerajaan sudah tampil di layar*/
+
+void introSilan();
+/* Menampilkan identitas kelompok */
+/* I.S : Identitas kelompok belum tampil di layar */
+/* F.S : Identitas kelompok sudah tampil di layar*/
+
+void gotoxy(int X, int y);
+/* Mengatur titik koordinat kursor */
+/* I.S : Titik koordinat kursor belum diatur */
+/* F.S : Titik koordinat kursor sudah diatur */
 #endif
